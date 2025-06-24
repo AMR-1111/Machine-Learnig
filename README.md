@@ -40,7 +40,7 @@ I am enthusiastic about advancing my skills in AI, ML, and NLP through hands-on 
 ## 📫 Contact
 
 Feel free to reach out for collaboration or internship opportunities:  
-**Email:** amna.ranjha@example.com  
+**Email:** amnaranjha230@gmail.com.com  
 **LinkedIn:** [linkedin.com/in/amnaranjha](https://linkedin.com/in/amnaranjha)
 
 ---
