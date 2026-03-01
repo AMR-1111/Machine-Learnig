@@ -1,0 +1,268 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dcc3af73-5d65-40e0-81c3-d7f71c31f8a5",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0Sib56vwg7mUdtKA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Sponsorship ",
+              "description": "🧠 Sponsorship Email Detection Description (For AI Agent)  A Sponsorship Email is an outreach message sent to a company, brand, or organization with the purpose of requesting financial support, partnership, product contribution, or collaboration for an event, initiative, program, or project.  The core intent of this email is to obtain support in exchange for visibility, branding, promotion, or engagement opportunities.  🎯 Detection Criteria  The AI agent should classify an email as a Sponsorship Email if it includes:  1. A Request for Support  The email contains direct or indirect intent to obtain:  Funding  Partnership  Resources  Product support  Collaboration  Example intent phrases:  “seeking sponsorship”  “invite you to partner with us”  “support our event”  “collaboration opportunity”  “in exchange for your support”  2. A Mentioned Initiative  The email references something that needs support, such as:  Event  Program  Campaign  Community initiative  Startup ecosystem activity  Conference / meetup  3. Mutual Value Exchange  The email offers benefits to the sponsor, such as:  Brand visibility  Logo placement  Marketing exposure  Audience access  Promotional opportunities  4. Partnership Tone  The message frames the request as a win-win collaboration, not a donation.  5. Call to Action  Usually includes:  Invitation to connect  Proposal discussion  Meeting request  Sponsorship deck sharing  🚨 Classification Rule  Classify as Sponsorship Email if:  The sender is requesting financial, material, or partnership support for an initiative while offering brand, marketing, or engagement benefits in return.  ❌ Do NOT classify as Sponsorship Email if:  It is purely informational  It is a sales pitch  It is a job request  It is a donation appeal with no brand exchange  🏷️ Output Label:  Sponsorship Request"
+            },
+            {
+              "category": "High priority ",
+              "description": "🚨 High Priority Email – Detection Description (For AI Agent)  A High Priority Email is a message that requires immediate attention, quick response, or urgent action due to time sensitivity, business impact, decision-making importance, or operational dependency.  The core intent of this email is to trigger fast action or response.  🎯 Detection Criteria  The AI agent should classify an email as High Priority if it includes:  1. Urgency Signals  Language that indicates time sensitivity such as:  “urgent”  “as soon as possible”  “immediate attention”  “time-sensitive”  “deadline approaching”  “today / tomorrow”  “last date”  2. Business-Critical Impact  The email relates to matters that affect:  Partnerships  Sponsorship decisions  Investor communication  Event execution  Financial matters  Leadership decisions  Client commitments  3. Action Requirement  The email asks for:  Approval  Confirmation  Decision  Payment  Meeting scheduling  Finalization  4. Consequence of Delay  Indicates that delay may cause:  Missed opportunity  Loss of deal  Event disruption  Partnership withdrawal  Deadline failure  5. Leadership / Strategic Involvement  Often includes:  Founders  Sponsors  Investors  Key partners  Organizers  🧠 Classification Rule  Classify as High Priority if:  The email requires urgent response or action and has direct impact on operations, partnerships, financials, events, or strategic outcomes.  ❌ Do NOT classify as High Priority if:  It is informational  It is a casual update  It is a marketing email  It has no deadline or urgency  It can be handled later without risk  🏷️ Output Label:  High Priority"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        -32
+      ],
+      "id": "4abe7f93-f047-4341-867a-63965dfe38af",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+        "message": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        -96
+      ],
+      "id": "7a554d83-494f-442d-9cb9-db36770f767b",
+      "name": "Create a draft",
+      "webhookId": "907d7cfd-d4c4-4ff7-9b6f-0541f142b1ba",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0Sib56vwg7mUdtKA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+        "message": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        80
+      ],
+      "id": "43c4c3eb-fcb8-47d3-b4a4-8f267733a4f8",
+      "name": "Create a draft1",
+      "webhookId": "36fb56f1-ca00-48ad-8275-d153f0a8cb4a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0Sib56vwg7mUdtKA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        112,
+        192
+      ],
+      "id": "c4b3807e-1db5-419f-8039-9cca25b4a6a6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bDVKOh4QfZ4p8Dno",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an email classification assistant.\n\nYour task is to analyze incoming emails and detect whether the email is a Sponsorship Request.\n\nA Sponsorship Request email is any email where the sender is asking for:\n\nFinancial support\n\nBrand partnership\n\nEvent collaboration\n\nProduct or service sponsorship\n\nin exchange for:\n\nBrand visibility\n\nMarketing exposure\n\nLogo placement\n\nAudience access\n\nPromotional benefits\n\n🎯 Classification Rule\n\nClassify the email as:\n\nSPONSORSHIP_EMAIL\n\nif the email:\n\nRequests funding, support, or partnership\nAND\n\nMentions an event, initiative, program, or collaboration\nAND\n\nOffers promotional or branding value in return\n\n❌ Do NOT classify as sponsorship if:\n\nIt is a sales email\n\nIt is a job request\n\nIt is informational\n\nIt asks for a donation with no brand benefit\n\n📤 Action Rule\n\nIf the email is identified as a Sponsorship Request:\n\nReturn:\n\nSPONSORSHIP_EMAIL_DETECTED\n\nThen generate the following internal alert message:\n\nA new sponsorship opportunity email has been received. Please review and respond promptly.\n\n📥 If NOT Sponsorship\n\nReturn:\n\nNOT_SPONSORSHIP\n\n📌 Output Format (Strict)\n\nOnly return ONE of the following:\n\nSPONSORSHIP_EMAIL_DETECTED\n\nNOT_SPONSORSHIP"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        -112
+      ],
+      "id": "3f7bce2b-d676-408d-9b11-19c343340db9",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bDVKOh4QfZ4p8Dno",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an email classification assistant.\n\nYour task is to analyze incoming emails and detect whether the email is High Priority.\n\nA High Priority email is any message that requires urgent attention, immediate response, or time-sensitive action due to business impact, deadlines, or critical decisions.\n\n🎯 Classification Rule\n\nClassify the email as:\n\nHIGH_PRIORITY_EMAIL\n\nif the email contains:\n\nUrgent or time-sensitive language\nAND / OR\n\nA deadline or immediate action request\nAND\n\nBusiness, operational, partnership, financial, or event impact\n\n🚨 Urgency Indicators\n\nLook for signals such as:\n\nurgent\n\nASAP\n\nimmediate attention\n\ndeadline\n\ntoday / tomorrow\n\nfinal confirmation\n\napproval needed\n\ntime-sensitive\n\nlast date\n\naction required\n\n📤 Action Rule\n\nIf the email is identified as High Priority:\n\nReturn:\n\nHIGH_PRIORITY_EMAIL_DETECTED\n\nThen generate the following internal alert message:\n\nA high priority email has been received that requires immediate attention.\n\n❌ Do NOT classify as High Priority if:\n\nIt is informational\n\nIt is a marketing email\n\nIt is a casual update\n\nNo urgency or deadline is mentioned"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        32
+      ],
+      "id": "6634e6f4-f81f-4a22-92f3-e4ae99e9c589",
+      "name": "Message a model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bDVKOh4QfZ4p8Dno",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Create a draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e5d0d352-4dd2-4356-a4ce-d31cbfcfa66d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a5ec558296ac7165ead0a7a2f898679ab10216f5e58879b2803ceb24566c34f7"
+  },
+  "id": "EuWSmCJxKICX9a8C",
+  "tags": []
+}
